@@ -61,7 +61,7 @@ class SkiaConan(ConanFile):
 
     def source(self):
         # Fix include paths ...
-        print("Fixing headers:")
+        self.output.info("Fixing headers:")
         all_headers = find_all_headers(os.path.join(self.source_folder, "skia"))
         for header in all_headers:
             fix(all_headers, header)
@@ -70,7 +70,7 @@ class SkiaConan(ConanFile):
             print("Error: No header files found")
             exit(1)
 
-        print("Fixed %i files" % (len(all_headers)))
+        self.output.info("Fixed %i files" % (len(all_headers)))
 
         # Fetch dependencies
         self.run('/usr/local/bin/python skia/tools/git-sync-deps')
@@ -132,19 +132,12 @@ conan_basic_setup()''')
         self.copy("*.dylib", dst="lib", src="lib",keep_path=False)
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
 
+        if self.settings.build_type == "Release":
+            libs = os.listdir(os.path.join(self.package_folder, "lib"))
+            for lib in libs:
+                self.run('strip -S %s' % (os.path.join(self.package_folder, "lib" ,lib)))
+
     def package_info(self):
-        self.cpp_info.libs = [
-            "skia",
-            "third_party__dng_sdk",
-            "third_party__expat",
-            "third_party__icu",
-            "third_party__libjpeg-turbo_libjpeg",
-            "third_party__libpng",
-            "third_party__libwebp",
-            "third_party__libwebp_libwebp_sse41",
-            "third_party__piex",
-            "third_party__sfntly",
-            "third_party__spirv-tools",
-            "third_party__zlib",
-            "third_party__zlib_zlib_x86"
-        ]
+        libs = os.listdir(os.path.join(self.package_folder, "lib"))
+        libs = [(x[3:])[:-2] for x in libs]
+        self.cpp_info.libs = libs
