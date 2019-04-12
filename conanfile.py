@@ -82,10 +82,17 @@ class SkiaConan(ConanFile):
         if self.options.gpu:
             opts += ["skia_enable_gpu=true"]
 
+        if self.settings.build_type == "Debug":
+            opts += ["is_debug=true"]
+        else:
+            opts += ["is_debug=false"]
+
         if len(opts) > 0:
             opts = '"--args=%s"' % " ".join(opts)
-        else 
+        else:
             opts = ""
+
+        self.output.info("gn options: %s" % (opts))
 
         self.run('$PWD/skia/bin/gn gen skia/out/config %s --ide=json --json-ide-script=../../gn/gn_to_cmake.py --root=./skia' % opts)
 
