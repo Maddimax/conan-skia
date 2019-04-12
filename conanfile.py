@@ -84,6 +84,8 @@ class SkiaConan(ConanFile):
 
         if len(opts) > 0:
             opts = '"--args=%s"' % " ".join(opts)
+        else 
+            opts = ""
 
         self.run('$PWD/skia/bin/gn gen skia/out/config %s --ide=json --json-ide-script=../../gn/gn_to_cmake.py --root=./skia' % opts)
 
