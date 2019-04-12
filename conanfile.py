@@ -37,7 +37,7 @@ def fix(all_headers, src):
 
 class SkiaConan(ConanFile):
     name = "skia"
-    version = "0.1"
+    version = "master"
     license = "<Put the package license here>"
     author = "<Put your name here> <And your email here>"
     url = "https://github.com/google/skia.git"
@@ -53,9 +53,12 @@ class SkiaConan(ConanFile):
     scm = {
         "type": "git",
         "subfolder": "skia",
-        "url": "https://github.com/google/skia.git",
-        "revision": "auto"
+        "url": "auto",
+        "revision": "auto",
+        "submodule" : "shallow"
     }
+
+    revision_mode = "scm"
 
     def source(self):
         #self.run("git clone https://github.com/google/skia.git")
