@@ -39,8 +39,8 @@ class SkiaConan(ConanFile):
     name = "skia"
     version = "master"
     license = "<Put the package license here>"
-    author = "<Put your name here> <And your email here>"
-    url = "https://github.com/google/skia.git"
+    author = "Marcus Tillmanns <maddimax@gmail.com>"
+    url = "https://github.com/Maddimax/conan-skia.git"
     description = "A 2D/3D Vector rendering engine"
     topics = ("render", "vector", "2d", "3d")
     settings = "os", "compiler", "build_type", "arch"
@@ -52,7 +52,6 @@ class SkiaConan(ConanFile):
 
     scm = {
         "type": "git",
-        "subfolder": "skia",
         "url": "auto",
         "revision": "auto",
         "submodule" : "shallow"
@@ -61,18 +60,8 @@ class SkiaConan(ConanFile):
     revision_mode = "scm"
 
     def source(self):
-        #self.run("git clone https://github.com/google/skia.git")
-
-        #self.run("git clone https://github.com/AshampooSystems/skia-releases.git skia")
-        #### skia-release specific
-        #self.run("cd skia && git checkout 04-01-2019")
-        #tools.replace_in_file("skia/gn/gn_to_cmake.py", "source_file_types = {",
-        #                          '''source_file_types = {
-        #                          '.mm': 'cxx',''')
-        ####
-
-        print("Fixing headers:")
         # Fix include paths ...
+        print("Fixing headers:")
         all_headers = find_all_headers(os.path.join(self.source_folder, "skia"))
         for header in all_headers:
             fix(all_headers, header)
@@ -83,6 +72,7 @@ class SkiaConan(ConanFile):
 
         print("Fixed %i files" % (len(all_headers)))
 
+        # Fetch dependencies
         self.run('/usr/local/bin/python skia/tools/git-sync-deps')
 
         # Generate CMakeLists.txt
@@ -104,6 +94,7 @@ project(skia)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
 
+        # Add missing compile options
         with open("skia/out/config/CMakeLists.txt", "a") as f:
             r = ""
             if self.settings.os == "iOS" or self.settings.os == "Macos":
@@ -114,8 +105,6 @@ conan_basic_setup()''')
                     r += 'target_compile_options(gpu_tool_utils PUBLIC "-fobjc-arc")\n'
 
             f.write(r)
-
-
 
     def configure(self):
         if self.options.metal:
