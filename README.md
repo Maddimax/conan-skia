@@ -39,7 +39,8 @@ Note: It is recommended that you run conan install from a build directory and no
 
 ## Supported OS
 
-Currenly this package works for and provides packages for iOS and macOS. Pull Requests for other platforms are very welcome. 
+Currenly this package works for and provides packages for iOS and macOS. Pull Requests for other platforms are very welcome ( see [Issues Tracker](https://github.com/Maddimax/conan-skia/issues) )
+
 
 ## Build and package
 
