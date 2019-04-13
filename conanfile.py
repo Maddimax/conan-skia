@@ -153,11 +153,14 @@ conan_basic_setup()''')
 
         if self.settings.build_type == "Release":
             libs = os.listdir(os.path.join(self.package_folder, "lib"))
-            print("Trying to strip: %s" %(libs))
+            self.output.info("Trying to strip: %s" %(libs))
             for lib in libs:
                 self.run('strip -S %s' % (os.path.join(self.package_folder, "lib" ,lib)))
 
     def package_info(self):
         libs = os.listdir(os.path.join(self.package_folder, "lib"))
         libs = [(x[3:])[:-2] for x in libs]
+
         self.cpp_info.libs = libs
+        if self.options.metal:
+            self.cpp_info.exelinkflags += ["-framework Metal", "-framework MetalKit", "-framework AppKit"]
