@@ -1,3 +1,5 @@
+set -e
+
 CONAN_REVISIONS_ENABLED=1
 conan create . maddimax/master -o skia:metal=True -o skia:gpu=True --profile ios_profile
 conan create . maddimax/master -o skia:metal=False -o skia:gpu=True --profile ios_profile
