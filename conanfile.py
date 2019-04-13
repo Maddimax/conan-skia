@@ -47,7 +47,7 @@ class SkiaConan(ConanFile):
     options = {"shared": [True, False],
                 "metal" : [True, False],
                 "gpu" : [True, False]}
-    default_options = {"shared":False, "metal" : False, "gpu" : True}
+    default_options = {"shared":False, "metal" : False, "gpu" : False}
     generators = "cmake"
 
     scm = {
