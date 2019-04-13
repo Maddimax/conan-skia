@@ -231,7 +231,15 @@ class SkiaConan(ConanFile):
                 raise errors.ConanInvalidConfiguration("Metal is only supported on darwin platforms: %s" % self.settings.os) 
         if self.settings.os == "iOS":
             self.options.skia_use_fonthost_mac = False
-            
+            self.options.skia_use_system_expat = False
+            self.options.skia_use_system_expat = False
+            self.options.skia_use_system_harfbuzz = False
+            self.options.skia_use_system_icu = False
+            self.options.skia_use_system_libjpeg_turbo = False
+            self.options.skia_use_system_libpng = False
+            self.options.skia_use_system_libwebp = False
+            self.options.skia_use_system_zlib = False
+ 
     def build(self):
         flags = []
         for k,v in self.deps_cpp_info.dependencies:
