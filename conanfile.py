@@ -297,4 +297,5 @@ class SkiaConan(ConanFile):
         if self.settings.os == "Macos":
             self.cpp_info.exelinkflags += ["-framework AppKit"]
             if self.options.skia_use_metal:
+                self.cpp_info.defines += ["SK_METAL=1"]
                 self.cpp_info.exelinkflags += ["-framework Metal", "-framework MetalKit", "-framework AppKit"]
